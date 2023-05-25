@@ -1,9 +1,11 @@
-### Intro 
+### Intro
+
 Indecro is a simple framework for job scheduling
 
-All parts are designed to be replaceable. 
+All parts are designed to be replaceable.
 
 Main ideas are:
+
 * No pickle! Tasks are stored in readable format, so can be used outside of framework
 * Task creator doesn't need to know how tasks are implemented or executed
 * Persistence may be implemented
@@ -32,6 +34,8 @@ Schedule job using decorator-based shortcut (custom job name can be provided for
 from datetime import datetime, timedelta
 
 from indecro.rules import RunOnce
+
+
 # Rule, theft control time when scheduled task would be executed
 
 
@@ -57,4 +61,11 @@ Run scheduler:
 
 ```python
 await scheduler.run()
+```
+
+More examples of using framework you can fing in examples directory
+
+```bash
+cd examples
+ls
 ```
