@@ -7,7 +7,7 @@ from indecro.api.job import Job
 
 class Storage(Protocol):
     @abstractmethod
-    def add_job(self, job: Job):
+    def add_job(self, job: Job) -> Job:
         raise NotImplementedError()
 
     @abstractmethod
@@ -47,7 +47,7 @@ class Storage(Protocol):
 
 class AsyncStorage(Protocol):
     @abstractmethod
-    async def add_job(self, job: Job):
+    async def add_job(self, job: Job) -> Job:
         raise NotImplementedError()
 
     @abstractmethod
