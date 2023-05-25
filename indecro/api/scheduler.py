@@ -16,7 +16,7 @@ from indecro.api.rules import Rule
 class Scheduler(Protocol):
     if TYPE_CHECKING:
         @abstractmethod
-        def task(
+        def job(
                 self,
                 rule: Rule,
 
