@@ -7,7 +7,7 @@ from indecro.exceptions import JobNeverBeScheduled
 
 
 @dataclass
-class IntervalRule(Rule):
+class RunRegular(Rule):
     start: datetime
     period: timedelta
 
@@ -25,17 +25,17 @@ class IntervalRule(Rule):
 
 
 @dataclass
-class SingleRun(Rule):
-    when: datetime
+class RunOnce(Rule):
+    at: datetime
 
     def get_next_schedule_time(self, *, after: datetime) -> datetime:
-        if after > self.when:
+        if after > self.at:
             raise JobNeverBeScheduled(after=after, by_rule=self)
-        return self.when
+        return self.at
 
     def __repr__(self):
         # TODO: Remove hardcode from arguments displaying in repr
-        return f'{self.__class__.__name__}(when={repr(self.when)})'
+        return f'{self.__class__.__name__}(when={repr(self.at)})'
 
     def __hash__(self):
         return hash(repr(self))
