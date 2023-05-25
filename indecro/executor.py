@@ -15,8 +15,11 @@ class Executor(ExecutorProtocol):
             return False
 
         if job.daemonize == RunAs.FUNCTION:
-            self.sync_worker(job.task(), job)
-            job.is_running = False
+            res = self.sync_worker(job.task, job)
+
+            if isinstance(res, Awaitable):
+                await res
+
         else:
             if job.daemonize == RunAs.THREAD:
                 res = asyncio.to_thread(functools.partial(self.sync_worker, job.task, job))
