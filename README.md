@@ -62,7 +62,7 @@ Run scheduler:
 await scheduler.run()
 ```
 
-More examples of using framework you can fing in examples directory
+More examples of using framework you can find in examples directory
 
 ```bash
 cd examples
