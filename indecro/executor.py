@@ -3,7 +3,7 @@ import functools
 from typing import Awaitable, Any, Union, Coroutine, Callable
 
 from indecro.api.executor import Executor as ExecutorProtocol
-from indecro.api.job import Job
+from indecro.api.job import Job, RunAs
 
 
 class Executor(ExecutorProtocol):
@@ -14,40 +14,45 @@ class Executor(ExecutorProtocol):
         if job.is_running:
             return False
 
-        if job.daemonize:
-            if job.is_thread_safe:
+        if job.daemonize == RunAs.FUNCTION:
+            self.sync_worker(job.task(), job)
+            job.is_running = False
+        else:
+            if job.daemonize == RunAs.THREAD:
                 res = asyncio.to_thread(functools.partial(self.sync_worker, job.task, job))
-            else:
+            elif job.daemonize == RunAs.ASYNC_TASK:
                 res = job.task()
 
                 if not isinstance(res, Awaitable):
                     pass
                     # TODO: Create warning message here
 
-                if isinstance(res, Awaitable) and not isinstance(res, Coroutine):
+                elif isinstance(res, Awaitable) and not isinstance(res, Coroutine):
                     res = self.worker_for_awaitable_but_not_coro(res, job)
+            else:
+                raise ValueError(f'Invalid job.daemonize value: {job.daemonize}')
 
             if isinstance(res, Coroutine):
                 self.daemonized_tasks.add(task := asyncio.create_task(res))
                 job.running_task = task
-            else:
-                pass
-                # TODO: Create warning message here
-        else:
-            self.sync_worker(job.task(), job)
-            job.is_running = False
 
         return True
 
-    @staticmethod
-    async def worker_for_awaitable_but_not_coro(awaitable_but_not_coro: Awaitable, job: Job):
+    async def worker_for_awaitable_but_not_coro(self, awaitable_but_not_coro: Awaitable, job: Job):
         job.is_running = True
-        await awaitable_but_not_coro
+        res = await awaitable_but_not_coro
         job.is_running = False
+
+        self.daemonized_tasks.remove(job.running_task)
+
         job.running_task = None
+
+        return res
 
     @staticmethod
     def sync_worker(target: Callable, job: Job):
         job.is_running = True
-        target()
+        res = target()
         job.is_running = False
+
+        return res
