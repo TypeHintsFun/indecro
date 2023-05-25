@@ -1,6 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from typing import Optional
 
 from indecro.api.rules import Rule
 from indecro.exceptions import JobNeverBeScheduled
@@ -24,9 +25,24 @@ class RunRegular(Rule):
         return hash(repr(self))
 
 
-@dataclass
+@dataclass(init=False)
 class RunOnce(Rule):
-    at: datetime
+    at: Optional[datetime] = None
+    after: Optional[timedelta] = None
+
+    def __init__(
+            self,
+            at: Optional[datetime] = None,
+            after: Optional[timedelta] = None
+    ):
+        if (not at) and (not after):
+            raise ValueError('You must provide at parameter or after parameter')
+
+        if at is None:
+            at = datetime.now() + after
+
+        self.at = at
+        self.after = after
 
     def get_next_schedule_time(self, *, after: datetime) -> datetime:
         if after > self.at:
@@ -35,7 +51,7 @@ class RunOnce(Rule):
 
     def __repr__(self):
         # TODO: Remove hardcode from arguments displaying in repr
-        return f'{self.__class__.__name__}(when={repr(self.at)})'
+        return f'{self.__class__.__name__}(at={repr(self.at)}, after={self.after})'
 
     def __hash__(self):
         return hash(repr(self))
