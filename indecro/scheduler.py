@@ -1,7 +1,7 @@
 import asyncio
 import functools
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union, Awaitable
 
 from indecro.api.executor import Executor
 from indecro.api.job import RunAs
@@ -10,11 +10,11 @@ from indecro.exceptions import JobNeverBeScheduled
 from indecro.job import Job
 from indecro.api.rules import Rule
 from indecro.api.scheduler import Scheduler as SchedulerProtocol
-from indecro.api.storage import Storage
+from indecro.api.storage import Storage, AsyncStorage
 
 
 class Scheduler(SchedulerProtocol):
-    def __init__(self, storage: Storage, executor: Executor):
+    def __init__(self, storage: Union[Storage, AsyncStorage], executor: Executor):
         self.storage = storage
         self.executor = executor
 
@@ -68,9 +68,7 @@ class Scheduler(SchedulerProtocol):
                 daemonize=daemonize
             )
 
-        self.storage.add_job(job)
-
-        return job
+        return self.storage.add_job(job)
 
     async def stop(self):
         self.running = False
@@ -88,8 +86,8 @@ class Scheduler(SchedulerProtocol):
         job.next_run_time = job.rule.get_next_schedule_time(after=datetime.now())
         return job.next_run_time
 
-    async def remove_job(self, job: Job):
-        self.storage.remove_job(job)
+    def remove_job(self, job: Job):
+        return self.storage.remove_job(job)
 
     async def run(self):
         self.running = True
@@ -101,7 +99,11 @@ class Scheduler(SchedulerProtocol):
                 try:
                     job_executed = await self.execute_job(job)
                 except JobNeverBeScheduled:
-                    self.storage.remove_job(job)
+                    res = self.storage.remove_job(job)
+
+                    if isinstance(res, Awaitable):
+                        await res
+
                     job_executed = False
 
                 any_job_started = job_executed or any_job_started
