@@ -44,8 +44,6 @@ from indecro.rules import RunOnce
 
 
 # Rule, theft control time when scheduled task would be executed
-
-
 @scheduler.job(rule=RunOnce(at=datetime.now() + timedelta(seconds=10)))
 async def some_job():
     print('Executing some job..')
