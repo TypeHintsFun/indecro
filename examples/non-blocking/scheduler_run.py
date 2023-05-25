@@ -32,7 +32,7 @@ scheduler.add_job(
 async def my_loop():
     while True:
         print('Work in loop..')
-        await asyncio.sleep(10)  # At least, write here await asyncio.sleep(0) to передать thread control
+        await asyncio.sleep(10)  # At least, write here await asyncio.sleep(0) to give thread control to another daemon task
 
 
 async def main():
