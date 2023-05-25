@@ -2,12 +2,19 @@ import asyncio
 from abc import abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
 from typing import Optional, Protocol
 
 from indecro.api.executor import Executor
 from indecro.api.rules import Rule
 from indecro.api.scheduler import Scheduler
 from indecro.api.task import Task
+
+
+class RunAs(Enum):
+    FUNCTION = 'FUNCTION'
+    ASYNC_TASK = 'ASYNC_TASK'
+    THREAD = 'THREAD'
 
 
 @dataclass
@@ -17,8 +24,7 @@ class Job(Protocol):
 
     next_run_time: datetime
 
-    daemonize: bool = False
-    is_thread_safe: bool = False
+    daemonize: RunAs = RunAs.FUNCTION
 
     name: Optional[str] = None
 

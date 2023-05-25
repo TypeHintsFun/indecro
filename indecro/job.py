@@ -8,7 +8,7 @@ from indecro.api.executor import Executor
 from indecro.api.task import Task
 from indecro.api.rules import Rule
 from indecro.api.scheduler import Scheduler
-from indecro.api.job import Job as JobProtocol
+from indecro.api.job import Job as JobProtocol, RunAs
 
 
 @dataclass
@@ -18,8 +18,7 @@ class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the
 
     next_run_time: datetime
 
-    daemonize: bool = False
-    is_thread_safe: bool = False
+    daemonize: RunAs = RunAs.FUNCTION
 
     name: Optional[str] = None
 

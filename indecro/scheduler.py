@@ -1,9 +1,10 @@
 import asyncio
 import functools
 from datetime import datetime
-from typing import Optional, Union
+from typing import Optional
 
 from indecro.api.executor import Executor
+from indecro.api.job import RunAs
 from indecro.api.task import Task
 from indecro.exceptions import JobNeverBeScheduled
 from indecro.job import Job
@@ -23,8 +24,7 @@ class Scheduler(SchedulerProtocol):
             self,
             rule: Rule,
 
-            daemonize: bool = False,
-            is_thread_safe: bool = False,
+            daemonize: RunAs = RunAs.FUNCTION,
 
             name: Optional[str] = None,
 
@@ -36,7 +36,6 @@ class Scheduler(SchedulerProtocol):
                 task=task,
                 rule=rule,
                 daemonize=daemonize,
-                is_thread_safe=is_thread_safe,
                 name=name,
                 *args,
                 **kwargs
@@ -50,8 +49,7 @@ class Scheduler(SchedulerProtocol):
             task: Task,
             rule: Rule,
 
-            daemonize: bool = False,
-            is_thread_safe: bool = False,
+            daemonize: RunAs = RunAs.FUNCTION,
 
             name: Optional[str] = None,
             *args,
@@ -67,8 +65,7 @@ class Scheduler(SchedulerProtocol):
                 name=name,
                 scheduler=self,
                 executor=self.executor,
-                daemonize=daemonize,
-                is_thread_safe=is_thread_safe
+                daemonize=daemonize
             )
 
         self.storage.add_job(job)
@@ -100,7 +97,6 @@ class Scheduler(SchedulerProtocol):
             now = datetime.now()
 
             any_job_started = False
-            # print(f'{now=}')
             for job in self.storage.iter_jobs(before=now):
                 try:
                     job_executed = await self.execute_job(job)
