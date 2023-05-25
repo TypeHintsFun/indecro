@@ -1,5 +1,5 @@
 ### Intro 
-Indecro is a small framework for task scheduling
+Indecro is a simple framework for job scheduling
 
 All parts are designed to be replaceable. 
 
