@@ -33,4 +33,5 @@ def do_something():
 # Starting task
 # Task finished
 
-asyncio.run(scheduler.run())
+if __name__ == '__main__':
+    asyncio.run(scheduler.run())

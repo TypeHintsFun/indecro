@@ -44,4 +44,5 @@ async def main():
     # You also can execute your code while scheduler is running
 
 
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())

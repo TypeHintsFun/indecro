@@ -28,5 +28,5 @@ scheduler.add_job(
     rule=RunOnce(at=datetime.now() + timedelta(seconds=20))
 )
 
-
-asyncio.run(scheduler.run())
+if __name__ == '__main__':
+    asyncio.run(scheduler.run())
