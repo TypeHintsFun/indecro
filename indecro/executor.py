@@ -29,21 +29,18 @@ class Executor(ExecutorProtocol):
                 if not isinstance(res, Awaitable):
                     pass
                     # TODO: Create warning message here
-
-                elif isinstance(res, Awaitable) and not isinstance(res, Coroutine):
-                    res = self.worker_for_awaitable_but_not_coro(res, job)
             else:
                 raise ValueError(f'Invalid job.daemonize value: {job.daemonize}')
 
             if isinstance(res, Coroutine):
-                self.daemonized_tasks.add(task := asyncio.create_task(res))
+                self.daemonized_tasks.add(task := asyncio.create_task(self.worker_for_awaitable(res, Job)))
                 job.running_task = task
 
         return True
 
-    async def worker_for_awaitable_but_not_coro(self, awaitable_but_not_coro: Awaitable, job: Job):
+    async def worker_for_awaitable(self, awaitable: Awaitable, job: Job):
         job.is_running = True
-        res = await awaitable_but_not_coro
+        res = await awaitable
         job.is_running = False
 
         self.daemonized_tasks.remove(job.running_task)
