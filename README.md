@@ -6,10 +6,9 @@ All parts are designed to be replaceable.
 
 Main ideas are:
 
-* No pickle! Tasks are stored in readable format, so can be used outside of framework
 * Task creator doesn't need to know how tasks are implemented or executed
 * Persistence may be implemented
-* All workers must follow same async style: be either sync or async functions
+* You can choose how jobs will be parallelized and whether they will be parallelized at all
 
 Currently project is in the design stage and any APIs are to be changed
 
