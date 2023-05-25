@@ -25,8 +25,8 @@ def do_something():
     print('Task finished')
 
 
-# Jobs will be executed absolutely последовательно because you dont provided any "parallel" executing method
-# asynchronous functions doesnt help you because in this mode indecro will последовательно execute async functions too
+# Jobs will be executed absolutely sequential because you dont provided any "parallel" executing method
+# asynchronous functions doesnt help you because in this mode indecro will sequential execute async functions too
 #
 # Starting task
 # Task finished
