@@ -12,6 +12,14 @@ Main ideas are:
 
 Currently project is in the design stage and any APIs are to be changed
 
+
+### How to install:
+
+#### Install using pip
+```bash
+pip install indecro
+```
+
 ### How to use:
 
 Create scheduler
