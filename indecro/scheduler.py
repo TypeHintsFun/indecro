@@ -20,7 +20,7 @@ class Scheduler(SchedulerProtocol):
 
         self.running = False
 
-    def task(
+    def job(
             self,
             rule: Rule,
 
