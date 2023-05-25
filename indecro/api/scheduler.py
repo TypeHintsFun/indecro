@@ -3,7 +3,11 @@ from __future__ import annotations
 from abc import abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Protocol, Optional, Union, Any, Awaitable
+from typing import Protocol, Optional, Union, Awaitable, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from indecro.api.job import RunAs
+    from indecro.api.job import Job
 
 from indecro.api.task import Task
 from indecro.api.rules import Rule
@@ -28,8 +32,7 @@ class Scheduler(Protocol):
             self,
             rule: Rule,
 
-            daemonize: bool = False,
-            is_thread_safe: bool = False,
+                daemonize: RunAs = RunAs.FUNCTION,
 
             name: Optional[str] = None,
 
@@ -44,8 +47,7 @@ class Scheduler(Protocol):
             task: Task,
             rule: Rule,
 
-            daemonize: bool = False,
-            is_thread_safe: bool = False,
+                daemonize: RunAs = RunAs.FUNCTION,
 
             name: Optional[str] = None,
 
