@@ -17,6 +17,8 @@ class RunEvery(Rule):
 
     init_time: datetime = field(default_factory=datetime.now)
 
+    repeats: int = 0
+
     def get_next_schedule_time(self, *, after: datetime) -> datetime:
         # Lazy after timedelta to datetime transformation instead of __init__ redefinition
         if isinstance(self.after, timedelta):
@@ -34,12 +36,14 @@ class RunEvery(Rule):
         if self.before is not None and self.before <= next_schedule_time:
             raise JobNeverBeScheduled(after=after, by_rule=self)
 
-        if self.repeat is not None and self.repeat < intervals:
+        if self.repeat is not None and self.repeat <= self.repeats:
             raise JobNeverBeScheduled(after=after, by_rule=self)
 
         if self.after is not None and self.after > next_schedule_time:
             next_schedule_time = self.after
             self.after = None
+
+        self.repeats += 1
 
         return next_schedule_time
 
