@@ -55,7 +55,7 @@ class Scheduler(Protocol):
             raise NotImplementedError()
 
     @abstractmethod
-    async def stop(self):
+    def stop(self):
         pass
 
     @abstractmethod

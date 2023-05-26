@@ -75,7 +75,7 @@ class Scheduler(SchedulerProtocol):
 
         return self.storage.add_job(job)
 
-    async def stop(self):
+    def stop(self):
         self.running = False
 
     async def execute_job(self, job: JobProtocol, reschedule: bool = True):
