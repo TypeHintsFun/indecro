@@ -13,11 +13,22 @@ from indecro.exceptions import JobNeverBeScheduled
 class RunEvery(Rule):
     period: timedelta
     after: datetime = field(default_factory=datetime.now)
+    before: Optional[datetime] = None
+    repeats: Optional[int] = None
 
     def get_next_schedule_time(self, *, after: datetime) -> datetime:
         delta = after - self.after
         intervals = delta.total_seconds() // self.period.total_seconds() + 1
-        return self.after + intervals * self.period
+
+        next_schedule_time = self.after + intervals * self.period
+
+        if self.before is not None and self.before <= next_schedule_time:
+            raise JobNeverBeScheduled(after=after, by_rule=self)
+
+        if self.repeats is not None and self.repeats < intervals:
+            raise JobNeverBeScheduled(after=after, by_rule=self)
+
+        return next_schedule_time
 
     def __repr__(self):
         # TODO: Remove hardcode from arguments displaying in repr
