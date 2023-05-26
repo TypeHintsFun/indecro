@@ -12,7 +12,7 @@ from indecro.exceptions import JobNeverBeScheduled
 class RunEvery(Rule):
     period: timedelta
     after: Optional[Union[datetime, timedelta]] = None
-    before: Optional[datetime] = None
+    before: Optional[Union[datetime, timedelta]] = None
     repeat: Optional[int] = None
 
     init_time: datetime = field(default_factory=datetime.now)
@@ -21,6 +21,10 @@ class RunEvery(Rule):
         # Lazy after timedelta to datetime transformation instead of __init__ redefinition
         if isinstance(self.after, timedelta):
             self.after = self.init_time + self.after
+
+        #similar actions for before
+        if isinstance(self.before, timedelta):
+            self.before = self.init_time + self.before
 
         delta = after - self.init_time
         intervals = delta.total_seconds() // self.period.total_seconds() + 1
