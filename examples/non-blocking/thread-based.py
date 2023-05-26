@@ -33,8 +33,10 @@ def do_something():
 
 # For safety use of thread-based "parallel" jobs executing your jobs must be sync and thread-safe
 #
+# *waiting 10 seconds*
 # Starting task
 # Starting task
+# *waiting 10 seconds*
 # Task finished
 # Task finished
 

@@ -30,8 +30,10 @@ async def do_something():
 
 # To use async-based "parallel" jobs executing your jobs must also be asynchronous
 #
+# *waiting 10 seconds*
 # Starting task
 # Starting task
+# *waiting 10 seconds*
 # Task finished
 # Task finished
 

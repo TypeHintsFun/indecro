@@ -28,9 +28,13 @@ def do_something():
 # Jobs will be executed absolutely sequential because you dont provided any "parallel" executing method
 # asynchronous functions doesnt help you because in this mode indecro will sequential execute async functions too
 #
+# *waiting 10 seconds*
 # Starting task
+# *waiting 10 seconds*
 # Task finished
+# *waiting 10 seconds*
 # Starting task
+# *waiting 10 seconds*
 # Task finished
 
 if __name__ == '__main__':
