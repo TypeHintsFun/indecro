@@ -1,9 +1,11 @@
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, Callable, Any, Union
 
-from indecro.api.rules import Rule
+from magic_filter import MagicFilter
+
+from indecro.api.rules import Rule, BoolRule
 from indecro.exceptions import JobNeverBeScheduled
 
 
@@ -52,6 +54,25 @@ class RunOnce(Rule):
     def __repr__(self):
         # TODO: Remove hardcode from arguments displaying in repr
         return f'{self.__class__.__name__}(at={repr(self.at)}, after={self.after})'
+
+    def __hash__(self):
+        return hash(repr(self))
+
+
+@dataclass
+class RunWhen(BoolRule):
+    will: Union[MagicFilter, Callable[[], bool]]
+    subject: Union[None, Any] = None
+
+    def get_must_be_scheduled_now_flag(self):
+        if isinstance(self.will, MagicFilter):
+            return self.will.resolve(self.subject)
+        elif isinstance(self.will, Callable):
+            return self.will()
+
+    def __repr__(self):
+        # TODO: Remove hardcode from arguments displaying in repr
+        return f'{self.__class__.__name__}(at={repr(self.will)}, after={self.subject})'
 
     def __hash__(self):
         return hash(repr(self))

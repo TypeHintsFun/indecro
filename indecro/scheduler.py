@@ -6,7 +6,8 @@ from typing import Optional, Union, Awaitable
 from indecro.api.executor import Executor
 from indecro.api.job import RunAs
 from indecro.api.task import Task
-from indecro.exceptions import JobNeverBeScheduled
+from indecro.exceptions import JobNeverBeScheduled, CannotPredictJobSchedulingTime
+from indecro.api.job import Job as JobProtocol
 from indecro.job import Job
 from indecro.api.rules import Rule
 from indecro.api.scheduler import Scheduler as SchedulerProtocol
@@ -54,14 +55,18 @@ class Scheduler(SchedulerProtocol):
             name: Optional[str] = None,
             *args,
             **kwargs
-    ) -> Job:
+    ) -> JobProtocol:
         if isinstance(task, Job):
             job = task
         else:
+            try:
+                next_run_time = rule.get_next_schedule_time(after=datetime.now())
+            except CannotPredictJobSchedulingTime:
+                next_run_time = None
             job = Job(
                 task=functools.partial(task, *args, **kwargs),
                 rule=rule,
-                next_run_time=rule.get_next_schedule_time(after=datetime.now()),
+                next_run_time=next_run_time,
                 name=name,
                 scheduler=self,
                 executor=self.executor,
@@ -73,7 +78,7 @@ class Scheduler(SchedulerProtocol):
     async def stop(self):
         self.running = False
 
-    async def execute_job(self, job: Job, reschedule: bool = True):
+    async def execute_job(self, job: JobProtocol, reschedule: bool = True):
         job_executed = await self.executor.execute(job)
 
         if reschedule:
@@ -82,11 +87,14 @@ class Scheduler(SchedulerProtocol):
         return job_executed
 
     @staticmethod
-    def schedule_job(job: Job):
-        job.next_run_time = job.rule.get_next_schedule_time(after=datetime.now())
-        return job.next_run_time
+    def schedule_job(job: JobProtocol):
+        try:
+            job.next_run_time = job.rule.get_next_schedule_time(after=datetime.now())
+        except CannotPredictJobSchedulingTime:
+            pass
+        return None
 
-    def remove_job(self, job: Job):
+    def remove_job(self, job: JobProtocol):
         return self.storage.remove_job(job)
 
     async def run(self):
@@ -104,6 +112,8 @@ class Scheduler(SchedulerProtocol):
                     if isinstance(res, Awaitable):
                         await res
 
+                    job_executed = False
+                except CannotPredictJobSchedulingTime:  # Looks like BoolRule, we just wait
                     job_executed = False
 
                 any_job_started = job_executed or any_job_started

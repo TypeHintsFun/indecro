@@ -2,11 +2,11 @@ import asyncio
 from abc import abstractmethod
 from dataclasses import dataclass, is_dataclass
 from datetime import datetime
-from typing import Optional, Any
+from typing import Optional, Any, Union
 
 from indecro.api.executor import Executor
 from indecro.api.task import Task
-from indecro.api.rules import Rule
+from indecro.api.rules import Rule, BoolRule
 from indecro.api.scheduler import Scheduler
 from indecro.api.job import Job as JobProtocol, RunAs
 
@@ -14,7 +14,7 @@ from indecro.api.job import Job as JobProtocol, RunAs
 @dataclass
 class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the paycharm with dataclasses and typehints for them is to blame
     task: Task
-    rule: Rule
+    rule: Union[Rule, BoolRule]
 
     next_run_time: datetime
 

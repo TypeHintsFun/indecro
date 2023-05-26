@@ -25,9 +25,12 @@ class MemoryStorage(BaseStorage):
 
         a = 0
         for job in sorted(self.jobs, key=lambda job: job.next_run_time):
-            # print(f'{job=}')
-            # print(job.next_run_time > datetime.now())
-            if (
+
+            if job.next_run_time is None:
+                if job.rule.get_must_be_scheduled_now_flag():
+                    yield job
+                    a += 1
+            elif (
                     (after is not None and job.next_run_time > after) or
                     (before is not None and job.next_run_time < before)
             ) and \

@@ -3,10 +3,10 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Protocol
+from typing import Optional, Protocol, Union
 
 from indecro.api.executor import Executor
-from indecro.api.rules import Rule
+from indecro.api.rules import Rule, BoolRule
 from indecro.api.scheduler import Scheduler
 from indecro.api.task import Task
 
@@ -20,7 +20,7 @@ class RunAs(Enum):
 @dataclass
 class Job(Protocol):
     task: Task
-    rule: Rule
+    rule: Union[Rule, BoolRule]
 
     next_run_time: datetime
 
