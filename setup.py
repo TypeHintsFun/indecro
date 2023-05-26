@@ -9,7 +9,7 @@ this_directory = path.abspath(path.dirname(__file__))
 setup(
     name='indecro',
     description='Python scheduler with task independency from scheduler, executor and others',
-    version='0.131',
+    version='0.132',
     url='https://github.com/TypeHintsFun/indecro',
     author='TypeHintsFun',
     author_email='typehintsfun@gmail.com',
