@@ -1,4 +1,3 @@
-from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Optional, Callable, Any, Union
