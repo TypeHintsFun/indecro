@@ -15,9 +15,16 @@ from indecro.api.storage import Storage, AsyncStorage
 
 
 class Scheduler(SchedulerProtocol):
-    def __init__(self, storage: Union[Storage, AsyncStorage], executor: Executor):
+    def __init__(
+            self,
+            storage: Union[Storage, AsyncStorage],
+            executor: Executor,
+            loop_delay: Union[int, float] = 1
+    ):
         self.storage = storage
         self.executor = executor
+
+        self.loop_delay = loop_delay
 
         self.running = False
 
@@ -118,4 +125,5 @@ class Scheduler(SchedulerProtocol):
 
                 any_job_started = job_executed or any_job_started
 
-            await asyncio.sleep(not any_job_started)
+            # Sleeping loop_delay seconds if not any job started, else sleeping 0 seconds (asyncio magic)
+            await asyncio.sleep(self.loop_delay * (not any_job_started))
