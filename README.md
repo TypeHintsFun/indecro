@@ -39,13 +39,13 @@ scheduler = Scheduler(
 Schedule job using decorator-based shortcut (custom job name can be provided for compatibility)
 
 ```python
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from indecro.rules import RunOnce
 
 
 # Rule, theft control time when scheduled task would be executed
-@scheduler.job(rule=RunOnce(at=datetime.now() + timedelta(seconds=10)))
+@scheduler.job(rule=RunOnce(after=timedelta(seconds=10)))
 async def some_job():
     print('Executing some job..')
 ```
@@ -59,7 +59,7 @@ async def some_another_job():
 
 scheduler.add_job(
     some_another_job,
-    rule=RunOnce(at=datetime.now() + timedelta(seconds=20))
+    rule=RunOnce(after=timedelta(seconds=20))
 )
 ```
 

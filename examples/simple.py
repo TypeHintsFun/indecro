@@ -13,7 +13,7 @@ scheduler = Scheduler(
 
 
 @scheduler.job(
-    rule=RunOnce(at=datetime.now() + timedelta(seconds=10))
+    rule=RunOnce(after=timedelta(seconds=10))
 )
 async def some_job():
     print('Executing some job..')
@@ -25,7 +25,7 @@ async def some_another_job():
 
 scheduler.add_job(
     some_another_job,
-    rule=RunOnce(at=datetime.now() + timedelta(seconds=20))
+    rule=RunOnce(after=timedelta(seconds=20))
 )
 
 if __name__ == '__main__':
