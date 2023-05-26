@@ -8,18 +8,18 @@ from indecro.exceptions import JobNeverBeScheduled
 
 
 @dataclass
-class RunRegular(Rule):
-    start: datetime
+class RunEvery(Rule):
     period: timedelta
+    after: datetime = field(default_factory=datetime.now)
 
     def get_next_schedule_time(self, *, after: datetime) -> datetime:
-        delta = after - self.start
+        delta = after - self.after
         intervals = delta.total_seconds() // self.period.total_seconds() + 1
-        return self.start + intervals * self.period
+        return self.after + intervals * self.period
 
     def __repr__(self):
         # TODO: Remove hardcode from arguments displaying in repr
-        return f'{self.__class__.__name__}(start={repr(self.start)}, period={repr(self.period)})'
+        return f'{self.__class__.__name__}(start={repr(self.after)}, period={repr(self.period)})'
 
     def __hash__(self):
         return hash(repr(self))
