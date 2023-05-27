@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from indecro import Scheduler
 from indecro.executor import Executor
