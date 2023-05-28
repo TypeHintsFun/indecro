@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from os import path
 
 from setuptools import setup, find_packages
-
-this_directory = path.abspath(path.dirname(__file__))
 
 setup(
     name='indecro',
