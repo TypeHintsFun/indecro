@@ -35,14 +35,16 @@ class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the
 
         await self.scheduler.schedule_job(self)
 
-    async def execute(self, reschedule: bool = True) -> Any:
+    async def execute(self, reschedule: bool = True) -> bool:
         if self.executor is None:
             raise ValueError('To use execute shortcut you must provide an executor attribute for job object')
 
-        await self.executor.execute(self)
+        executed = await self.executor.execute(self)
 
         if reschedule:
             await self.scheduler.schedule_job(self)
+
+        return executed
 
     def __hash__(self):
         return hash(hash(self.rule) + hash(self.name) + hash(self.task))

@@ -85,13 +85,8 @@ class Scheduler(SchedulerProtocol):
     def stop(self):
         self.running = False
 
-    async def execute_job(self, job: JobProtocol, reschedule: bool = True):
-        job_executed = await self.executor.execute(job)
-
-        if reschedule:
-            self.schedule_job(job)
-
-        return job_executed
+    async def execute_job(self, job: JobProtocol, reschedule: bool = True) -> bool:
+        return await job.execute(reschedule=reschedule)
 
     @staticmethod
     def schedule_job(job: JobProtocol):

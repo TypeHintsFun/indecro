@@ -9,5 +9,5 @@ if TYPE_CHECKING:
 class Executor(Protocol):
     if TYPE_CHECKING:
         @abstractmethod
-        async def execute(self, job: Job):
+        async def execute(self, job: Job) -> bool:
             raise NotImplementedError()

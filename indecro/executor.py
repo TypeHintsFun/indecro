@@ -10,7 +10,7 @@ class Executor(ExecutorProtocol):
     def __init__(self):
         self.daemonized_tasks: set[asyncio.Task] = set()
 
-    async def execute(self, job: Job):
+    async def execute(self, job: Job) -> bool:
         if job.is_running:
             return False
 
