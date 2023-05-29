@@ -13,13 +13,15 @@ from indecro.api.rules import Rule
 from indecro.api.scheduler import Scheduler as SchedulerProtocol
 from indecro.api.storage import Storage, AsyncStorage
 
+from indecro.defaults import SECONDS_PER_LOOP
+
 
 class Scheduler(SchedulerProtocol):
     def __init__(
             self,
             storage: Union[Storage, AsyncStorage],
             executor: Executor,
-            loop_delay: Union[int, float] = 1
+            loop_delay: Union[int, float] = SECONDS_PER_LOOP
     ):
         self.storage = storage
         self.executor = executor

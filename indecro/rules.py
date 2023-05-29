@@ -4,7 +4,9 @@ from typing import Optional, Callable, Any, Union
 
 from magic_filter import MagicFilter
 
-from indecro.api.rules import Rule, BoolRule
+from indecro.api.rules import Rule, BoolRule, CheckEvery
+
+from indecro.defaults import SECONDS_PER_LOOP
 from indecro.exceptions import JobNeverBeScheduled
 
 
@@ -91,6 +93,8 @@ class RunOnce(Rule):
 class RunWhen(BoolRule):
     will: Union[MagicFilter, Callable[[], bool]]
     subject: Union[None, Any] = None
+
+    check_every: CheckEvery = CheckEvery(timedelta(seconds=SECONDS_PER_LOOP))
 
     def get_must_be_scheduled_now_flag(self):
         if isinstance(self.will, MagicFilter):
