@@ -12,7 +12,8 @@ from indecro.api.job import Job as JobProtocol, RunAs
 
 
 @dataclass
-class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the paycharm with dataclasses and typehints for them is to blame
+class Job(
+    JobProtocol):  # If the Job is highlighted in red, the bad work of the paycharm with dataclasses and typehints for them is to blame
     task: Task
     rule: Union[Rule, BoolRule]
 
@@ -29,11 +30,11 @@ class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the
 
     running_task: Optional[asyncio.Task] = None
 
-    async def schedule(self, reschedule: bool = True) -> None:
+    def schedule(self) -> None:
         if self.scheduler is None:
             raise ValueError('To use schedule shortcut you must provide an scheduler attribute for job object')
 
-        await self.scheduler.schedule_job(self)
+        self.scheduler.schedule_job(self)
 
     async def execute(self, reschedule: bool = True) -> bool:
         if self.executor is None:
@@ -42,7 +43,7 @@ class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the
         executed = await self.executor.execute(self)
 
         if reschedule:
-            await self.scheduler.schedule_job(self)
+            self.schedule()
 
         return executed
 

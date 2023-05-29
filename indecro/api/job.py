@@ -36,7 +36,7 @@ class Job(Protocol):
     running_task: Optional[asyncio.Task] = None
 
     @abstractmethod
-    async def schedule(self, reschedule: bool = True) -> None:
+    def schedule(self) -> None:
         raise NotImplementedError()
 
     @abstractmethod
