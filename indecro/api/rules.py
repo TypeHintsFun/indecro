@@ -33,12 +33,9 @@ class CheckEvery:
             raise ValueError('You must choice only one variant: provide time parameter or iteration and '
                              'seconds_per_iteration parameters')
 
-        if iteration or (not seconds_per_iteration):  # xor
+        if sum(map(bool, [iteration, seconds_per_iteration])):  # xor
             raise ValueError('If you provide first argument for iteration-based time calculating, you must provide '
                              'second argument for iteration-based time calculating')
-
-        self.last_check_time = datetime.now()
-        self.next_check_time = self.get_next_check_time(self.last_check_time)
 
         if time is None:
             iteration: Union[int, float]
@@ -49,6 +46,9 @@ class CheckEvery:
             time = timedelta(seconds=time)
 
         self._check_period = time
+
+        self.last_check_time = datetime.now()
+        self.next_check_time = self.get_next_check_time(self.last_check_time)
 
     def get_next_check_time(self, after: datetime) -> datetime:
         next_check_time = self.last_check_time
