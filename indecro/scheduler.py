@@ -109,6 +109,8 @@ class Scheduler(SchedulerProtocol):
 
             any_job_started = False
             for job in self.storage.iter_jobs(before=now):
+                job_executed = False  # Setting a default value
+
                 try:
                     job_executed = await self.execute_job(job)
                 except JobNeverBeScheduled:
@@ -116,10 +118,8 @@ class Scheduler(SchedulerProtocol):
 
                     if isinstance(res, Awaitable):
                         await res
-
-                    job_executed = False
                 except CannotPredictJobSchedulingTime:  # Looks like BoolRule, we just wait
-                    job_executed = False
+                    pass
 
                 any_job_started = job_executed or any_job_started
 
