@@ -98,13 +98,26 @@ class RunWhen(BoolRule):
     will: Union[MagicFilter, Callable[[], bool]]
     subject: Union[None, Any] = None
 
+    repeats: int = -1
+
     check_every: CheckEvery = CheckEvery(timedelta(seconds=SECONDS_PER_LOOP))
+
+    repeats_passed: int = 0
 
     def get_must_be_scheduled_now_flag(self):
         if isinstance(self.will, MagicFilter):
-            return self.will.resolve(self.subject)
+            res = self.will.resolve(self.subject)
         elif isinstance(self.will, Callable):
-            return self.will()
+            res = self.will()
+        else:
+            res = False
+
+        if res is True:
+            self.repeats_passed += 1
+
+        if self.repeats_passed > self.repeats:
+            raise JobNeverBeScheduled(after=datetime.now(), by_rule=self)
+        return res
 
     def __repr__(self):
         # TODO: Remove hardcode from arguments displaying in repr
