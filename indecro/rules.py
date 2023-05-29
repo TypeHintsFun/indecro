@@ -26,7 +26,7 @@ class RunEvery(Rule):
         if isinstance(self.after, timedelta):
             self.after = self.init_time + self.after
 
-        #similar actions for before
+        # similar actions for before
         if isinstance(self.before, timedelta):
             self.before = self.init_time + self.before
 
@@ -57,10 +57,13 @@ class RunEvery(Rule):
         return hash(repr(self))
 
 
+# Execute job just one time
 @dataclass(init=False)
 class RunOnce(Rule):
     at: Optional[datetime] = None
+    # time_to_execute = at
     after: Optional[timedelta] = None
+    # time_to_execute = now + after
 
     def __init__(
             self,
@@ -89,6 +92,7 @@ class RunOnce(Rule):
         return hash(repr(self))
 
 
+# The most useful BoolRule realisation example
 @dataclass
 class RunWhen(BoolRule):
     will: Union[MagicFilter, Callable[[], bool]]
