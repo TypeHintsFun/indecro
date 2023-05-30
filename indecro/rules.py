@@ -116,7 +116,7 @@ class RunWhen(BoolRule):
         if res is True:
             self.repeats_passed += 1
 
-        if 0 <= self.repeats < self.repeats_passed:
+        if self.repeats >= 0 and self.repeats_passed > self.repeats:  # PyCharm, fuck you
             raise JobNeverBeScheduled(after=datetime.now(), by_rule=self)
         return res
 
