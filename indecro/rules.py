@@ -63,6 +63,7 @@ class RunOnce(Rule):
     at: Optional[datetime] = None
     # time_to_execute = at
     after: Optional[timedelta] = None
+
     # time_to_execute = now + after
 
     def __init__(
@@ -115,7 +116,7 @@ class RunWhen(BoolRule):
         if res is True:
             self.repeats_passed += 1
 
-        if self.repeats_passed > self.repeats:
+        if 0 <= self.repeats < self.repeats_passed:
             raise JobNeverBeScheduled(after=datetime.now(), by_rule=self)
         return res
 
