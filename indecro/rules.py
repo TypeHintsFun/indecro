@@ -7,7 +7,7 @@ from magic_filter import MagicFilter
 from indecro.api.rules import Rule, BoolRule, CheckEvery
 
 from indecro.defaults import SECONDS_PER_LOOP
-from indecro.exceptions import JobNeverBeScheduled
+from indecro.exceptions.rule import JobNeverBeScheduled
 
 
 @dataclass

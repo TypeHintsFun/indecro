@@ -12,7 +12,7 @@ from indecro.api.scheduler import Scheduler as SchedulerProtocol
 from indecro.api.storage import Storage, AsyncStorage
 
 from indecro.defaults import SECONDS_PER_LOOP
-from indecro.exceptions import JobNeverBeScheduled, CannotPredictJobSchedulingTime
+from indecro.exceptions.rule import JobNeverBeScheduled, CannotPredictJobSchedulingTime
 
 from indecro.job import Job
 

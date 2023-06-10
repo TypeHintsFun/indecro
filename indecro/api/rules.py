@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 
 from typing import NoReturn, Union, Optional
 
+from indecro.exceptions.rule import CannotPredictJobSchedulingTime
+
 
 class Rule(Protocol):
     @abstractmethod

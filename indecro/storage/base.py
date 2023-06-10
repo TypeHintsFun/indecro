@@ -5,6 +5,7 @@ from typing import Generator, AsyncGenerator, Optional, Union
 
 from indecro.api.job import Job
 from indecro.api.storage import Storage, AsyncStorage
+from indecro.exceptions.job import JobNotFound
 
 
 class BaseStorage(Storage, ABC):
