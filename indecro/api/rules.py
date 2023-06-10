@@ -4,8 +4,6 @@ from datetime import datetime, timedelta
 
 from typing import NoReturn, Union, Optional
 
-from indecro.exceptions.rule import CannotPredictJobSchedulingTime
-
 
 class Rule(Protocol):
     @abstractmethod
@@ -75,6 +73,6 @@ class BoolRule(Rule, Protocol):
         raise NotImplementedError()
 
     def get_next_schedule_time(self, *, after: datetime) -> NoReturn:
-        from indecro.exceptions import CannotPredictJobSchedulingTime
+        from indecro.exceptions.rule import CannotPredictJobSchedulingTime
 
         raise CannotPredictJobSchedulingTime(after=after, by_rule=self)
