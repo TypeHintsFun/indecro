@@ -78,5 +78,15 @@ class BaseAsyncStorage(AsyncStorage, ABC):
         raise NotImplementedError()
         yield  # For generator-like typehints in PyCharm
 
+    async def get_job(self, job_id: str) -> Job:
+        async for job in self:
+            if job.id == job_id:
+                return job
+        return None
+
+    @abstractmethod
+    async def __aiter__(self):
+        raise NotImplementedError()
+
 
 __all__ = ('BaseStorage', 'BaseAsyncStorage')
