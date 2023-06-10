@@ -97,7 +97,6 @@ class Scheduler(SchedulerProtocol):
             job.next_run_time = job.rule.get_next_schedule_time(after=datetime.now())
         except CannotPredictJobSchedulingTime:
             pass
-        return None
 
     def remove_job(self, job: JobProtocol):
         return self.storage.remove_job(job)
