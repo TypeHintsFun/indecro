@@ -7,11 +7,15 @@ from indecro.api.job import Job
 
 class Storage(Protocol):
     @abstractmethod
-    def add_job(self, job: Job) -> Job:
+    def add_job(self, job: Union[Job, str]) -> Job:
         raise NotImplementedError()
 
     @abstractmethod
-    def remove_job(self, job: Job):
+    def remove_job(self, job: Union[Job, str]):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_job(self, job_id: str) -> Job:
         raise NotImplementedError()
 
     @abstractmethod
@@ -47,11 +51,11 @@ class Storage(Protocol):
 
 class AsyncStorage(Protocol):
     @abstractmethod
-    async def add_job(self, job: Job) -> Job:
+    async def add_job(self, job: Union[Job, str]) -> Job:
         raise NotImplementedError()
 
     @abstractmethod
-    async def remove_job(self, job: Job):
+    async def remove_job(self, job: Union[Job, str]):
         raise NotImplementedError()
 
     @abstractmethod

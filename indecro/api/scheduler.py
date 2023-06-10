@@ -45,16 +45,15 @@ class Scheduler(Protocol):
             raise NotImplementedError()
 
         @abstractmethod
-        async def execute_job(self, job: Job, reschedule: bool = True):
-            raise NotImplementedError()
-
-        @staticmethod
-        @abstractmethod
-        def schedule_job(job: Job):
+        async def execute_job(self, job: Union[Job, str], reschedule: bool = True):
             raise NotImplementedError()
 
         @abstractmethod
-        def remove_job(self, job: Job):
+        def schedule_job(self, job: Union[Job, str]):
+            raise NotImplementedError()
+
+        @abstractmethod
+        def remove_job(self, job: Union[Job, str]):
             pass
 
     @abstractmethod

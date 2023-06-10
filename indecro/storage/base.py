@@ -18,6 +18,12 @@ class BaseStorage(Storage, ABC):
             return job
         return None
 
+    def get_job(self, job_id: str) -> Job:
+        for job in self:
+            if job.id == job_id:
+                return job
+        raise JobNotFound(by_id=job_id)
+
     @property
     def duty_job(self) -> Union[Job, None]:
         return self.get_duty_job(before=datetime.now())

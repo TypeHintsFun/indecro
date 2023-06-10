@@ -88,17 +88,31 @@ class Scheduler(SchedulerProtocol):
     def stop(self):
         self.running = False
 
-    async def execute_job(self, job: JobProtocol, reschedule: bool = True) -> bool:
+    async def execute_job(self, job: Union[JobProtocol, str], reschedule: bool = True) -> bool:
+        if isinstance(job, str):
+            job = self.storage.get_job(job)
+            if job is None:
+                raise
+
         return await job.execute(reschedule=reschedule)
 
-    @staticmethod
-    def schedule_job(job: JobProtocol):
+    def schedule_job(self, job: Union[JobProtocol, str]):
+        if isinstance(job, str):
+            job = self.storage.get_job(job)
+            if job is None:
+                raise
+
         try:
             job.next_run_time = job.rule.get_next_schedule_time(after=datetime.now())
         except CannotPredictJobSchedulingTime:
             pass
 
-    def remove_job(self, job: JobProtocol):
+    def remove_job(self, job: Union[JobProtocol, str]):
+        if isinstance(job, str):
+            job = self.storage.get_job(job)
+            if job is None:
+                raise
+
         return self.storage.remove_job(job)
 
     async def run(self):

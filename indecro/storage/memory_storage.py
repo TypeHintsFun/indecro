@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, Generator
+from typing import Optional, Generator, Union
 
 from .base import BaseStorage
 from indecro.api.job import Job
@@ -9,10 +9,10 @@ class MemoryStorage(BaseStorage):
     def __init__(self):
         self.jobs: set[Job] = set()
 
-    def add_job(self, job: Job):
+    def add_job(self, job: Union[Job, str]):
         self.jobs.add(job)
 
-    def remove_job(self, job: Job):
+    def remove_job(self, job: Union[Job, str]):
         self.jobs.remove(job)
 
     def __iter__(self):
