@@ -44,7 +44,6 @@ class Scheduler(Protocol):
         ) -> Union[Job, Awaitable[Job]]:
             raise NotImplementedError()
 
-    if TYPE_CHECKING:
         @abstractmethod
         async def execute_job(self, job: Job, reschedule: bool = True):
             raise NotImplementedError()
@@ -53,6 +52,10 @@ class Scheduler(Protocol):
         @abstractmethod
         def schedule_job(job: Job):
             raise NotImplementedError()
+
+        @abstractmethod
+        def remove_job(self, job: Job):
+            pass
 
     @abstractmethod
     def stop(self):
