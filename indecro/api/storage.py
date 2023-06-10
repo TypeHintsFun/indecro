@@ -88,5 +88,5 @@ class AsyncStorage(Protocol):
         yield  # For generator-like typehints in PyCharm
 
     @abstractmethod
-    def __iter__(self) -> Generator[Job]:
+    def __iter__(self) -> Generator[Job, None, None]:
         raise NotImplementedError()
