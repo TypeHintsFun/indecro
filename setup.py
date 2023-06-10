@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 setup(
     name='indecro',
     description='Python scheduler with task independency from scheduler, executor and others',
-    version='0.132',
+    version='0.135',
     url='https://github.com/TypeHintsFun/indecro',
     author='TypeHintsFun',
     author_email='typehintsfun@gmail.com',
