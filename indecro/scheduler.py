@@ -37,7 +37,7 @@ class Scheduler(SchedulerProtocol):
 
             daemonize: RunAs = RunAs.FUNCTION,
 
-            name: Optional[str] = None,
+            id: Optional[str] = None,
 
             *args,
             **kwargs
@@ -47,7 +47,7 @@ class Scheduler(SchedulerProtocol):
                 task=task,
                 rule=rule,
                 daemonize=daemonize,
-                name=name,
+                id=id,
                 *args,
                 **kwargs
             )
@@ -62,7 +62,7 @@ class Scheduler(SchedulerProtocol):
 
             daemonize: RunAs = RunAs.FUNCTION,
 
-            name: Optional[str] = None,
+            id: Optional[str] = None,
             *args,
             **kwargs
     ) -> JobProtocol:
@@ -77,7 +77,7 @@ class Scheduler(SchedulerProtocol):
                 task=functools.partial(task, *args, **kwargs),
                 rule=rule,
                 next_run_time=next_run_time,
-                name=name,
+                id=id,
                 scheduler=self,
                 executor=self.executor,
                 daemonize=daemonize

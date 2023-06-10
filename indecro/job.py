@@ -21,7 +21,7 @@ class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the
 
     daemonize: RunAs = RunAs.FUNCTION
 
-    name: Optional[str] = None
+    id: Optional[str] = None
 
     is_running: bool = False
 

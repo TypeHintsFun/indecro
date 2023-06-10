@@ -26,7 +26,7 @@ class Job(Protocol):
 
     daemonize: RunAs = RunAs.FUNCTION
 
-    name: Optional[str] = None
+    id: Optional[str] = None
 
     is_running: bool = False
 

@@ -20,7 +20,7 @@ class Scheduler(Protocol):
 
                 daemonize: RunAs = RunAs.FUNCTION,
 
-                name: Optional[str] = None,
+                id: Optional[str] = None,
 
                 *args,
                 **kwargs
@@ -35,7 +35,7 @@ class Scheduler(Protocol):
 
                 daemonize: RunAs = RunAs.FUNCTION,
 
-                name: Optional[str] = None,
+                id: Optional[str] = None,
 
                 *args,
                 **kwargs
