@@ -48,4 +48,4 @@ class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the
         return executed
 
     def __hash__(self):
-        return hash(hash(self.rule) + hash(self.name) + hash(self.task))
+        return hash(hash(self.rule) + hash(self.id) + hash(self.task))
