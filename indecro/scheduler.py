@@ -107,7 +107,7 @@ class Scheduler(SchedulerProtocol):
             now = datetime.now()
 
             any_job_started = False
-            for job in self.storage.iter_jobs(before=now):
+            for job in self.storage.iter_actual_jobs(before=now):
                 job_executed = False  # Setting a default value
 
                 try:

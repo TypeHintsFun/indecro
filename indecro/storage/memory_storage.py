@@ -15,7 +15,10 @@ class MemoryStorage(BaseStorage):
     def remove_job(self, job: Job):
         self.jobs.remove(job)
 
-    def iter_jobs(
+    def __iter__(self):
+        yield from sorted(self.jobs, key=lambda job: job.next_run_time)
+
+    def iter_actual_jobs(
             self,
             *,
             after: Optional[datetime] = None,
@@ -24,8 +27,7 @@ class MemoryStorage(BaseStorage):
     ) -> Generator[Job, None, None]:
 
         a = 0
-        for job in sorted(self.jobs, key=lambda job: job.next_run_time):
-
+        for job in self:
             if job.next_run_time is None:
                 if job.rule.get_must_be_scheduled_now_flag():
                     yield job

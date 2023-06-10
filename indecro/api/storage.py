@@ -25,7 +25,7 @@ class Storage(Protocol):
 
     @abstractmethod
     def get_duty_job(self, *, before: datetime) -> Union[Job, None]:
-        for job in self.iter_jobs(before=before):
+        for job in self.iter_actual_jobs(before=before):
             return job
         return None
 
@@ -35,7 +35,7 @@ class Storage(Protocol):
         return self.get_duty_job(before=datetime.now())
 
     @abstractmethod
-    def iter_jobs(
+    def iter_actual_jobs(
             self,
             *,
             after: Optional[datetime] = None,
@@ -73,7 +73,7 @@ class AsyncStorage(Protocol):
         raise NotImplementedError()
 
     @abstractmethod
-    async def iter_jobs(
+    async def iter_actual_jobs(
             self,
             *,
             after: Optional[datetime] = None,
@@ -82,3 +82,7 @@ class AsyncStorage(Protocol):
     ) -> AsyncGenerator[Job, None]:
         raise NotImplementedError()
         yield  # For generator-like typehints in PyCharm
+
+    @abstractmethod
+    def __iter__(self) -> Generator[Job]:
+        raise NotImplementedError()
