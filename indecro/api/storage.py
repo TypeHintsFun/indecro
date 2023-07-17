@@ -50,7 +50,10 @@ class Storage(Protocol):
 
     @abstractmethod
     def get_jobs_amount(self) -> int:
-        pass
+        raise NotImplementedError()
+
+    def is_empty(self) -> bool:
+        return self.get_jobs_amount() == 0
 
 
 class AsyncStorage(Protocol):
@@ -98,3 +101,6 @@ class AsyncStorage(Protocol):
     @abstractmethod
     async def get_jobs_amount(self) -> int:
         pass
+
+    async def is_empty(self) -> bool:
+        return (await self.get_jobs_amount()) == 0
