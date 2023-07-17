@@ -108,6 +108,9 @@ class Scheduler(SchedulerProtocol):
             pass
 
     def remove_job(self, job: Union[JobProtocol, str]):
+        if job is None:
+            raise ValueError('Job id must be not None')
+
         if isinstance(job, str):
             job = self.storage.get_job(job)
             if job is None:
