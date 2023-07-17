@@ -113,8 +113,6 @@ class Scheduler(SchedulerProtocol):
 
         if isinstance(job, str):
             job = self.storage.get_job(job)
-            if job is None:
-                raise
 
         return self.storage.remove_job(job)
 
@@ -143,4 +141,4 @@ class Scheduler(SchedulerProtocol):
             await asyncio.sleep(self.loop_delay * (not any_job_started))
 
     def start(self):
-        asyncio.create_task(self.run())
+        asyncio.run(self.run())
