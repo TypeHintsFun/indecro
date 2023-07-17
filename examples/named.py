@@ -1,11 +1,9 @@
-import asyncio
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from indecro import Scheduler
 from indecro.executor import Executor
-from indecro.job import Job
+from indecro.rules import RunEvery
 from indecro.storage.memory_storage import MemoryStorage
-from indecro.rules import RunEvery, RunOnce
 
 scheduler = Scheduler(
     executor=Executor(),
@@ -15,6 +13,7 @@ scheduler = Scheduler(
 
 async def foo(job_id: str):
     print(1)
+    # DO NOT USE THIS IN REAL TASKS! Use RunOnce instead
     # Remove task by id
     scheduler.remove_job(job_id)
 
