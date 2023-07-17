@@ -117,8 +117,9 @@ class Scheduler(SchedulerProtocol):
 
         return self.storage.remove_job(job)
 
-    async def run(self):
+    async def run(self, stop_when_storage_is_empty: bool = False):
         self.running = True
+
         while self.running:
             now = datetime.now()
 
@@ -129,14 +130,23 @@ class Scheduler(SchedulerProtocol):
                 try:
                     job_executed = await self.execute_job(job)
                 except JobNeverBeScheduled:
-                    res = self.storage.remove_job(job)
+                    storage_is_empty = self.storage.remove_job(job)
 
-                    if isinstance(res, Awaitable):
-                        await res
+                    if isinstance(storage_is_empty, Awaitable):
+                        await storage_is_empty
                 except CannotPredictJobSchedulingTime:  # Looks like BoolRule, we just wait
                     pass
 
                 any_job_started = job_executed or any_job_started
+
+            if stop_when_storage_is_empty:
+                storage_is_empty = self.storage.is_empty()
+
+                if isinstance(storage_is_empty, Awaitable):
+                    storage_is_empty = await storage_is_empty
+
+                if storage_is_empty:
+                    self.stop()
 
             # Sleeping loop_delay seconds if not any job started, else sleeping 0 seconds (asyncio magic)
             await asyncio.sleep(self.loop_delay * (not any_job_started))
