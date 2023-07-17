@@ -48,6 +48,10 @@ class Storage(Protocol):
     ) -> Generator[Job, None, None]:
         raise NotImplementedError()
 
+    @abstractmethod
+    def get_jobs_amount(self) -> int:
+        pass
+
 
 class AsyncStorage(Protocol):
     @abstractmethod
@@ -90,3 +94,7 @@ class AsyncStorage(Protocol):
     @abstractmethod
     def __iter__(self) -> Generator[Job, None, None]:
         raise NotImplementedError()
+
+    @abstractmethod
+    async def get_jobs_amount(self) -> int:
+        pass

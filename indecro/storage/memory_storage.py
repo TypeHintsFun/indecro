@@ -39,3 +39,6 @@ class MemoryStorage(BaseStorage):
                     (limit is None or a <= limit):
                 yield job
                 a += 1
+
+    def get_jobs_amount(self) -> int:
+        return len(self.jobs)

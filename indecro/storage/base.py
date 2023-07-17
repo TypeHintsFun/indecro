@@ -47,6 +47,12 @@ class BaseStorage(Storage, ABC):
     def __iter__(self):
         raise NotImplementedError()
 
+    def get_jobs_amount(self) -> int:
+        jobs_amount = 0
+        for _ in self:
+            jobs_amount += 1
+        return jobs_amount
+
 
 class BaseAsyncStorage(AsyncStorage, ABC):
     async def get_closest_job(self, *, after: datetime) -> Union[Job, None]:
@@ -87,6 +93,12 @@ class BaseAsyncStorage(AsyncStorage, ABC):
     @abstractmethod
     async def __aiter__(self):
         raise NotImplementedError()
+
+    async def get_jobs_amount(self) -> int:
+        jobs_amount = 0
+        async for _ in self:
+            jobs_amount += 1
+        return jobs_amount
 
 
 __all__ = ('BaseStorage', 'BaseAsyncStorage')
