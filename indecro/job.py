@@ -12,7 +12,7 @@ from indecro.api.job import Job as JobProtocol, RunAs
 
 
 @dataclass
-class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the paycharm with dataclasses and
+class Job(JobProtocol):  # If the Job is highlighted in red, the bad work of the pycharm with dataclasses and
     # typehints for them is to blame
     task: Task
     rule: Union[Rule, BoolRule]
