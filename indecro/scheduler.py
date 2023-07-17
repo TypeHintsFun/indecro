@@ -63,6 +63,7 @@ class Scheduler(SchedulerProtocol):
             daemonize: RunAs = RunAs.FUNCTION,
 
             id: Optional[str] = None,
+
             *args,
             **kwargs
     ) -> JobProtocol:
