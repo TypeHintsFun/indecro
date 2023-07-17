@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from abc import abstractmethod
 from typing import Protocol, Optional, Union, Awaitable, TYPE_CHECKING
 
@@ -59,5 +60,8 @@ class Scheduler(Protocol):
         pass
 
     @abstractmethod
-    async def run(self):
+    async def run(self, stop_when_storage_is_empty: bool = False):
         raise NotImplementedError()
+
+    def start(self, stop_when_storage_is_empty: bool = False):
+        asyncio.run(self.run(stop_when_storage_is_empty=stop_when_storage_is_empty))

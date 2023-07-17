@@ -140,6 +140,3 @@ class Scheduler(SchedulerProtocol):
 
             # Sleeping loop_delay seconds if not any job started, else sleeping 0 seconds (asyncio magic)
             await asyncio.sleep(self.loop_delay * (not any_job_started))
-
-    def start(self):
-        asyncio.run(self.run())
