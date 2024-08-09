@@ -2,18 +2,6 @@
 
 Indecro is a simple framework for job scheduling
 
-All parts are designed to be replaceable.
-
-Main ideas are:
-
-* Task creator doesn't need to know how tasks are implemented or executed
-* Persistence may be implemented
-* You can choose how jobs will be parallelized and whether they will be parallelized at all
-* Not only time-based scheduling rules! Magic filters and bool-based rules is available
-
-Currently project is in the design stage and any APIs are to be changed
-
-
 ### How to install:
 
 #### Install using pip
